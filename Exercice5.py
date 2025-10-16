@@ -96,32 +96,33 @@ def identifier_problemes(commentaires_negatifs, mots_cles_negatifs):
         commentaire=commentaire.lower()
         for char in '.,!?;:()[]{}"\'-':
             commentaire = commentaire.replace(char, ' ')
-            mots_commentaire = commentaire.split()
-    for mots_cles in mots_cles_negatifs:
-        for mot in mots_commentaire:
-            if mot == mots_cles or mot.startswith(mots_cles):
-                if mots_cles in frequence_problemes:
-                    frequence_problemes[mots_cles] += 1
-            else:
-                    frequence_problemes[mots_cles] = 1
+        mots_commentaire = commentaire.split()
+
+        for mots_cles in mots_cles_negatifs:
+            for mot in mots_commentaire:
+                if mot == mots_cles or mot.startswith(mots_cles):
+                    if mots_cles in frequence_problemes:
+                        frequence_problemes[mots_cles] = frequence_problemes.get(mots_cles,0) + 1
+
     liste = []
     for mot, freq in frequence_problemes.items():
         liste.append((mot, freq))
     
     liste_triee = []
+
     while liste:
-        max = liste[0]
+        maximum = liste[0]
         for t in liste:
-            if t[1] > max[1]:
-                max = t
-            liste_triee.append(max)
-            liste.remove(max)
-            liste = liste_triee
+            if t[1] > maximum[1]:
+                maximum = t
+            liste_triee.append(maximum)
+            liste.remove(maximum)
     
     frequence_triee = {}
     for mot, freq in liste_triee:
         frequence_triee[mot] = freq
-    return frequence_problemes
+    
+    return frequence_triee
 
 
 def generer_rapport_satisfaction(categories, frequence_problemes):
@@ -159,7 +160,7 @@ def generer_rapport_satisfaction(categories, frequence_problemes):
             pourcentage = (len(catégorie) / commentaires) * 100
         else:
             pourcentage = 0
-        rapport['distribution'][nom_catégorie]
+        rapport['distribution'][nom_catégorie] = pourcentage
 
     liste= []
     for mot, freq in frequence_problemes.items():

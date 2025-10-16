@@ -101,8 +101,7 @@ def identifier_problemes(commentaires_negatifs, mots_cles_negatifs):
         for mots_cles in mots_cles_negatifs:
             for mot in mots_commentaire:
                 if mot == mots_cles or mot.startswith(mots_cles):
-                    if mots_cles in frequence_problemes:
-                        frequence_problemes[mots_cles] = frequence_problemes.get(mots_cles,0) + 1
+                    frequence_problemes[mots_cles] = frequence_problemes.get(mots_cles,0) + 1
 
     liste = []
     for mot, freq in frequence_problemes.items():
@@ -118,9 +117,8 @@ def identifier_problemes(commentaires_negatifs, mots_cles_negatifs):
             liste_triee.append(maximum)
             liste.remove(maximum)
     
-    frequence_triee = {}
-    for mot, freq in liste_triee:
-        frequence_triee[mot] = freq
+    
+    frequence_triee = dict(sorted(frequence_problemes.items(), key = lambda x: x[1], reverse = True))
     
     return frequence_triee
 
@@ -189,16 +187,14 @@ def calculer_tendance(historique_scores):
     if len(historique_scores) < 2:
         return 'stable'
 
-    premier = historique_scores[0][1]
-    dernier = historique_scores[-1][1]
+    scores = [i[1] for i in historique_scores]
 
-    if dernier > premier:
-        return 'amélioration'
-    elif dernier < premier:
-        return 'dégradation'
+    if all(scores[i] >= scores[i-1] for i in range(1,len(scores))) and any(scores[i] > scores[i-1] for i in range(1,len(scores))):
+        return "amélioration"
+    elif all(scores[i] <= scores[i-1] for i in range(1,len(scores))) and any(scores[i] < scores[i-1] for i in range(1,len(scores))):
+        return "dégradation"
     else:
-        return 'stable'
-
+        return "stable"
 
 if __name__ == '__main__':
     # Dictionnaire des mots-clés et leurs scores

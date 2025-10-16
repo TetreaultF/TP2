@@ -188,8 +188,8 @@ def calculer_tendance(historique_scores):
     if len(historique_scores) < 2:
         return 'stable'
 
-    premier = historique_scores[0]
-    dernier = historique_scores[-1]
+    premier = historique_scores[0][1]
+    dernier = historique_scores[-1][1]
 
     if dernier > premier:
         return 'amélioration'
@@ -197,8 +197,6 @@ def calculer_tendance(historique_scores):
         return 'dégradation'
     else:
         return 'stable'
-
-    return tendance
 
 
 if __name__ == '__main__':

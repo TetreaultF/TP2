@@ -114,8 +114,8 @@ def identifier_problemes(commentaires_negatifs, mots_cles_negatifs):
         for t in liste:
             if t[1] > maximum[1]:
                 maximum = t
-            liste_triee.append(maximum)
-            liste.remove(maximum)
+        liste_triee.append(maximum)
+        liste.remove(maximum)
     
     
     frequence_triee = dict(sorted(frequence_problemes.items(), key = lambda x: x[1], reverse = True))

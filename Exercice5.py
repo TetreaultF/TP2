@@ -250,7 +250,8 @@ if __name__ == '__main__':
     if problemes:
         print("Problèmes récurrents (fréquence en %):")
         for probleme, freq in list(problemes.items())[:5]:
-            print(f"  - {probleme}: {freq:.1f}% des commentaires négatifs")
+            pourcentage = (freq / len(commentaires_negatifs)) * 100 if len(commentaires_negatifs) > 0 else 0
+            print(f"  - {probleme}: {pourcentage:.1f}% des commentaires négatifs")
     
     # Test rapport
     print("\n=== Rapport de satisfaction ===")
